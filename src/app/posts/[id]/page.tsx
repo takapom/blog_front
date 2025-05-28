@@ -1,3 +1,5 @@
+// 個々のブログに遷移
+
 'use client'
 
 import { useEffect, useState } from 'react'
