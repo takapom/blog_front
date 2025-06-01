@@ -32,14 +32,14 @@ export default function Sidebar() {
           </div>
         </div>
         <p className={styles.sidebarText}>
-          「HayaTech」と申します。自分の名前とテクノロジーを合わせたニックネームです。
-          大学卒業後、仕事でWeb制作を経験し、今現在はWeb系の開発に携わっています。
+          「Takapn」と申します。中学校からのニックネームです。<br />
+          現在、学生エンジニアとして個人開発や、長期インターンシップ、交流会に参加したりといった活動を行っております。
         </p>
       </div>
 
       <div className={styles.sidebarSection}>
         <h3 className={styles.sidebarTitle}>経歴</h3>
-        <p className={styles.sidebarText}>青山学院大学 社会情報学部 社会情報学科 学士卒</p>
+        <p className={styles.sidebarText}>大和大学 情報学部 情報学科 在学中</p>
       </div>
 
       <div className={styles.sidebarSection}>
