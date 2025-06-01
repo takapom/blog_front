@@ -12,7 +12,7 @@ export default function Page() {
         <div className={styles.mainHeader}>
           <div className={styles.logoSection}>
             <div className={styles.logo}>🏠</div>
-            <h1 className={styles.title}>HayaTech-Blog</h1>
+            <h1 className={styles.title}>Takapon</h1>
           </div>
           <p className={styles.subtitle}>エンジニア向けの記事を発信しています！</p>
         </div>

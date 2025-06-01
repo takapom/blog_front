@@ -27,7 +27,7 @@ export default function Sidebar() {
           <div className={styles.authorDetails}>
             <h4 className={styles.authorName}>Takapon</h4>
             <Link href="#" className={styles.authorLink}>
-              @hayatech-gh
+              @Takapon
             </Link>
           </div>
         </div>
