@@ -21,10 +21,10 @@ export default function Header() {
             ホーム
           </Link>
           <Link 
-            href="/" 
+            href="/dailytask" 
             className={`${styles.navLink} ${pathname === '/posts/new' ? styles.active : ''}`}
           >
-            hogehoge
+            My Daily Task
           </Link>
           <Link 
             href="/technology" 
