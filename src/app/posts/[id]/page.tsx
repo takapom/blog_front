@@ -1,9 +1,4 @@
-// 個々のブログに遷移
-
-'use client'
-
-import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import styles from '@/styles/detail.module.css'
 import Header from '../../components/Header'
@@ -17,62 +12,51 @@ interface Post {
   develop_lang: string
 }
 
-export default function PostPage() {
-  const params = useParams()
-  const [post, setPost] = useState<Post | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+interface PageProps {
+  params: Promise<{ id: string }>
+}
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setIsLoading(true)
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-        const response = await fetch(`${apiUrl}/api/posts/${params.id}`)
-        if (!response.ok) {
-          throw new Error("記事の取得に失敗しました")
-        }
-        const data = await response.json()
-        setPost(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "予期せぬエラーが発生しました")
-        console.error("Error:", err)
-      } finally {
-        setIsLoading(false)
-      }
+async function getPost(id: string): Promise<Post | null> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+  
+  try {
+    const response = await fetch(`${apiUrl}/api/posts/${id}`, {
+      next: { revalidate: 3600 }
+    })
+    
+    if (!response.ok) {
+      return null
     }
-
-    fetchPost()
-  }, [params.id])
-
-  if (isLoading) {
-    return (
-      <>
-        <Header />
-        <div className={styles.loading}>
-          <div className={styles.loadingSpinner}></div>
-          <p>読み込み中...</p>
-        </div>
-      </>
-    )
+    
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching post:', error)
+    return null
   }
+}
 
-  if (error) {
-    return (
-      <>
-        <Header />
-        <div className={styles.error}>エラー: {error}</div>
-      </>
-    )
+export async function generateStaticParams() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+  
+  try {
+    const response = await fetch(`${apiUrl}/api/posts/`)
+    if (!response.ok) return []
+    
+    const posts: Post[] = await response.json()
+    return posts.map((post) => ({
+      id: post.id.toString(),
+    }))
+  } catch {
+    return []
   }
+}
 
+export default async function PostPage({ params }: PageProps) {
+  const resolvedParams = await params
+  const post = await getPost(resolvedParams.id)
+  
   if (!post) {
-    return (
-      <>
-        <Header />
-        <div className={styles.error}>記事が見つかりませんでした</div>
-      </>
-    )
+    notFound()
   }
 
   return (
@@ -99,4 +83,3 @@ export default function PostPage() {
     </>
   )
 }
-
